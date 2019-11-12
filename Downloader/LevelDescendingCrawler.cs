@@ -60,7 +60,7 @@ namespace Downloader
 
             public IEnumerable<LevelNode> GetLevel(uint level)
             {
-                if (Levels.ContainsKey(level))
+                if (!Levels.ContainsKey(level))
                 {
                     throw new InvalidOperationException($"Requested level {level} not found!");
                 }
