@@ -14,11 +14,11 @@ namespace Downloader
 
             string userUrl = GetUserUrl();
 
-            Task craw = CrawlerBuilder<LevelDescendingCrawler>
+            Task craw = CrawlerBuilder<EagerDescendingCrawler>
                 .Create()
                 .WithUrl(userUrl)
                 .WithTargetDepth(4)
-                .OnPageCrawlEnded(PrintSiteLevelDescending)
+                .OnPageCrawlEnded(PrintSiteEagerDescending)
                 .Run();
               
 
