@@ -1,0 +1,4 @@
+*.suo
+*.idea
+.vs/*
+Downloader/bin/*
