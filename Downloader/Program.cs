@@ -13,15 +13,17 @@ namespace Downloader
             Console.OutputEncoding = Encoding.UTF8;
 
             string userUrl = GetUserUrl();
-           
+
             Task craw = CrawlerBuilder<LevelDescendingCrawler>
                 .Create()
                 .WithUrl(userUrl)
                 .WithTargetDepth(4)
                 .OnPageCrawlEnded(PrintSiteLevelDescending)
                 .Run();
+              
 
-            Task.WhenAll(craw);
+            Task.WaitAll(craw);
+
 
             Console.WriteLine("Press key to end this world...");
             Console.ReadKey();
