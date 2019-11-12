@@ -4,3 +4,4 @@
 
 # Ignore Compiled files
 Downloader/bin
+Downloader/obj
