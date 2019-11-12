@@ -1,4 +1,6 @@
-*.suo
-*.idea
-.vs/*
-Downloader/bin/*
+# Ignore IDE files
+.vs/
+.idea/
+
+# Ignore Compiled files
+Downloader/bin
