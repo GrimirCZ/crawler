@@ -12,19 +12,37 @@ namespace Downloader
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-
+            string userUrl = GetUserUrl();
            
             Task craw = CrawlerBuilder<LevelDescendingCrawler>
                 .Create()
-                .WithUrl("https://delta-skola.cz")
+                .WithUrl(userUrl)
                 .WithTargetDepth(4)
                 .OnPageCrawlEnded(PrintSiteLevelDescending)
                 .Run();
 
             Task.WhenAll(craw);
-        
+
+            Console.WriteLine("Press key to end this world...");
             Console.ReadKey();
             
+        }
+
+        private static string GetUserUrl()
+        {
+            string url = "";
+            while (!url.IsValidUrl())
+            {
+                Console.Write("Zadejte url: ");
+                url = Console.ReadLine();
+
+                if (!url.IsValidUrl())
+                {
+                    Console.WriteLine("Vámi zadaný text není validní url! (opakujte pokus)\n\n");
+                }
+            }
+
+            return url;
         }
 
         private static void PrintSiteEagerDescending(PageCrawlEndedData data)
