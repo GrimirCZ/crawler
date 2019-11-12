@@ -12,8 +12,9 @@ namespace Downloader
         {
             Console.OutputEncoding = Encoding.UTF8;
 
+
            
-           Task craw = CrawlerBuilder<LevelDescendingCrawler>
+            Task craw = CrawlerBuilder<LevelDescendingCrawler>
                 .Create()
                 .WithUrl("https://delta-skola.cz")
                 .WithTargetDepth(4)
