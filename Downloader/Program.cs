@@ -10,7 +10,6 @@ namespace Downloader
     {
         public static void Main(string[] args)
         {
-            // test comment
             Console.OutputEncoding = Encoding.UTF8;
 
             string userUrl = GetUserUrl();
