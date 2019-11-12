@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 
 namespace Downloader
 {
-    static class Program
+    class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            await CrawlerBuilder<LevelDescendingCrawler>
+           
+           Task craw = CrawlerBuilder<LevelDescendingCrawler>
                 .Create()
                 .WithUrl("https://delta-skola.cz")
                 .WithTargetDepth(4)
                 .OnPageCrawlEnded(PrintSiteLevelDescending)
                 .Run();
+
+            Task.WhenAll(craw);
+        
+            Console.ReadKey();
+            
         }
 
         private static void PrintSiteEagerDescending(PageCrawlEndedData data)
