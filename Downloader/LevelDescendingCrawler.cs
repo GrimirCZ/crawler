@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -78,7 +77,7 @@ namespace Downloader
         private LevelManager _levelManager;
 
         /*--PROPERTIES-START--*/
-        private ImmutableList<string> _crawledUrls;
+        private ImmutableHashSet<string> _crawledUrls;
 
         public string BaseUrl
         {
@@ -152,12 +151,6 @@ namespace Downloader
             }
         }
 
-        private static string _getPageTitle(HtmlDocument doc)
-        {
-            var titleTag = doc.DocumentNode.Descendants("title").FirstOrDefault();
-
-            return titleTag is null ? "No title" : titleTag.InnerText;
-        }
 
         private async Task _crawlPage(string url, string prevUrl, uint depth)
         {
@@ -174,7 +167,7 @@ namespace Downloader
             {
                 doc = await _getPageDoc(url);
             }
-            catch (WebException e)
+            catch (WebException)
             {
                 if (!IgnoreHttpErrors)
                 {
@@ -186,13 +179,15 @@ namespace Downloader
 
             _crawledUrls = _crawledUrls.Add(url);
 
+            // Get all unseen links on page
             var links = doc
                 .DocumentNode
                 .Descendants("a")
                 .GetUnseenUrls(_levelManager.Contains)
                 .ToList();
 
-            var title = _getPageTitle(doc).DecodeHtmlSpecialChars();
+            // Get title of page
+            var title = doc.GetPageTitle().DecodeHtmlSpecialChars();
 
             _notifyPageCrawlEnded(depth, url, prevUrl, title, doc); // notify page crawled
 
@@ -227,7 +222,7 @@ namespace Downloader
         public async Task Run()
         {
             _levelManager = LevelManager.Create();
-            _crawledUrls = ImmutableList<string>.Empty;
+            _crawledUrls = ImmutableHashSet<string>.Empty;
 
             await _crawlPage(_baseUrl, "Root", depth: 0);
 

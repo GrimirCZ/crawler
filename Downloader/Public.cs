@@ -128,7 +128,7 @@ namespace Downloader
         IImmutableList<Action<PageCrawlEndedData>> OnPageCrawlEndedHandlers { get; set; }
     }
 
-    public static class Helper
+    public static class HtmlExtensions
     {
         /**
          * Method returns Unseen urls from Enumerable of HtmlNodes
@@ -140,15 +140,38 @@ namespace Downloader
             return srcUrls
                 .Where(a => a.Attributes["href"] != null) // damn everyone who writes <a> without href
                 .Select(a => a.Attributes["href"].Value)
-                .Where(IsValidUrl)
-                .Select(NormalizeUrl)
+                .Where(Helper.IsValidUrl)
+                .Select(Helper.NormalizeUrl)
                 .Where(a => !haveSeenUrl(a))
                 .Distinct();
         }
 
+
+        /**
+         * Extracts Title of page from html doc
+         * If no title found, returns string "No title"
+         */
+        public static string GetPageTitle(this HtmlDocument doc)
+        {
+            var titleTag = doc.DocumentNode.Descendants("title").FirstOrDefault();
+
+            return titleTag is null ? "No title" : titleTag.InnerText;
+        }
+    }
+
+    public static class Helper
+    {
+        /**
+         * Takes string formatted with HTMLSpecialChars and returns UTF-8 representation
+         */
+        public static string DecodeHtmlSpecialChars(this string str)
+        {
+            return WebUtility.HtmlDecode(str);
+        }
+
         /**
          * Normalizes input url
-         * Removes trailing id
+         * Removes trailing id (#)
          * Removes GET parameters
          * Adds trailing slash
          */
@@ -172,14 +195,6 @@ namespace Downloader
         {
             return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-        }
-
-        /**
-         * Takes string formatted with HTMLSpecialChars and returns UTF-8 representation
-         */
-        public static string DecodeHtmlSpecialChars(this string str)
-        {
-            return WebUtility.HtmlDecode(str);
         }
     }
 
