@@ -170,6 +170,10 @@ namespace Downloader
             }
             catch (WebException)
             {
+                if (!NetworkInterface.GetIsNetworkAvailable())
+                {
+                    throw;
+                }
                 if (!IgnoreHttpErrors)
                 {
                     throw;
@@ -219,16 +223,10 @@ namespace Downloader
                 OnPageCrawlEndedHandlers = prev.OnPageCrawlEndedHandlers,
             };
         }
-        private bool NetPing()
-        {
-            bool connection = NetworkInterface.GetIsNetworkAvailable();
-            return connection;
-        }
         public async Task Run()
         {
             _levelManager = LevelManager.Create();
             _crawledUrls = ImmutableHashSet<string>.Empty;
-            if (NetPing()){
             await _crawlPage(_baseUrl, "Root", depth: 0);
 
             for (uint level = 1; level <= TargetDepth; level++)
@@ -239,7 +237,6 @@ namespace Downloader
                     .ToArray();
 
                 Task.WaitAll(runningCrawlers);
-                }
             }
         }
 
