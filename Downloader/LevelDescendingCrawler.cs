@@ -219,7 +219,7 @@ namespace Downloader
                 OnPageCrawlEndedHandlers = prev.OnPageCrawlEndedHandlers,
             };
         }
-        private bool NetPing(object sender)
+        private bool NetPing()
         {
             bool connection = NetworkInterface.GetIsNetworkAvailable();
             return connection;
@@ -228,7 +228,7 @@ namespace Downloader
         {
             _levelManager = LevelManager.Create();
             _crawledUrls = ImmutableHashSet<string>.Empty;
-            if (NetPing(_baseUrl)){
+            if (NetPing()){
             await _crawlPage(_baseUrl, "Root", depth: 0);
 
             for (uint level = 1; level <= TargetDepth; level++)
