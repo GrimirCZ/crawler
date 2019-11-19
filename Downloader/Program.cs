@@ -12,26 +12,27 @@ namespace Downloader
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            var userUrl = GetUserUrl();
+            string userUrl = GetUserUrl();
 
-            var craw = CrawlerBuilder<LevelDescendingCrawler>
+            Task craw = CrawlerBuilder<LevelDescendingCrawler>
                 .Create()
                 .WithUrl(userUrl)
                 .WithTargetDepth(4)
                 .OnPageCrawlEnded(PrintSiteLevelDescending)
                 .Run();
-
+              
 
             Task.WaitAll(craw);
 
 
             Console.WriteLine("Press key to end this world...");
             Console.ReadKey();
+            
         }
 
         private static string GetUserUrl()
         {
-            var url = "";
+            string url = "";
             while (!url.IsValidUrl())
             {
                 Console.Write("Zadejte url: ");
