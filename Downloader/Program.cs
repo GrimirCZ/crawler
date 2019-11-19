@@ -10,23 +10,31 @@ namespace Downloader
     {
         public static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            try
+            {
+                Console.OutputEncoding = Encoding.UTF8;
 
-            var userUrl = GetUserUrl();
+                var userUrl = GetUserUrl();
 
-            Task crawl = CrawlerBuilder<LevelDescendingCrawler>
-                .Create()
-                .WithUrl(userUrl)
-                .WithTargetDepth(4)
-                .OnPageCrawlEnded(PrintSiteLevelDescending)
-                .Run();
-
-
-            Task.WaitAll(crawl);
+                Task crawl = CrawlerBuilder<LevelDescendingCrawler>
+                    .Create()
+                    .WithUrl(userUrl)
+                    .WithTargetDepth(4)
+                    .OnPageCrawlEnded(PrintSiteLevelDescending)
+                    .Run();
 
 
-            Console.WriteLine("Press key to end this world...");
-            Console.ReadKey();
+                Task.WaitAll(crawl);
+
+
+                Console.WriteLine("Press key to end this world...");
+                Console.ReadKey();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Some very bad error");
+                Console.ReadKey();
+            }
         }
 
         private static string GetUserUrl()
