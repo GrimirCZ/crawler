@@ -14,7 +14,7 @@ namespace Downloader
 
             var userUrl = GetUserUrl();
 
-            Task craw = CrawlerBuilder<LevelDescendingCrawler>
+            Task crawl = CrawlerBuilder<LevelDescendingCrawler>
                 .Create()
                 .WithUrl(userUrl)
                 .WithTargetDepth(4)
@@ -22,7 +22,7 @@ namespace Downloader
                 .Run();
 
 
-            Task.WaitAll(craw);
+            Task.WaitAll(crawl);
 
 
             Console.WriteLine("Press key to end this world...");
