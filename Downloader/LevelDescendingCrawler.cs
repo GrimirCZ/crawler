@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -218,12 +219,16 @@ namespace Downloader
                 OnPageCrawlEndedHandlers = prev.OnPageCrawlEndedHandlers,
             };
         }
-
+        private bool NetPing(object sender)
+        {
+            bool connection = NetworkInterface.GetIsNetworkAvailable();
+            return connection;
+        }
         public async Task Run()
         {
             _levelManager = LevelManager.Create();
             _crawledUrls = ImmutableHashSet<string>.Empty;
-
+            if (NetPing(_baseUrl)){
             await _crawlPage(_baseUrl, "Root", depth: 0);
 
             for (uint level = 1; level <= TargetDepth; level++)
@@ -234,6 +239,7 @@ namespace Downloader
                     .ToArray();
 
                 Task.WaitAll(runningCrawlers);
+                }
             }
         }
 
