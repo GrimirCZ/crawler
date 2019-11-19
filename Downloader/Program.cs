@@ -45,6 +45,10 @@ namespace Downloader
                 Console.Write("Zadejte url: ");
                 url = Console.ReadLine();
 
+                if (url == "dev") {
+                    url = "https://delta-skola.cz";
+                }
+
                 if (!url.IsValidUrl())
                 {
                     Console.WriteLine("Vámi zadaný text není validní url! (opakujte pokus)\n\n");
