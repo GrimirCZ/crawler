@@ -208,7 +208,7 @@ namespace Downloader
 
         public ICrawler Clone(ICrawler prev)
         {
-            return new EagerDescendingCrawler
+            return new LevelDescendingCrawler()
             {
                 BaseUrl = prev.BaseUrl,
                 IgnoreHttpErrors = prev.IgnoreHttpErrors,
