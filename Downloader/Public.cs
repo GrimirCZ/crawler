@@ -208,4 +208,12 @@ namespace Downloader
             return new T();
         }
     }
+
+    public class OfflineException : Exception {
+        public OfflineException () : base("You are Offline")
+        {
+            
+            //Message = "You are Offline";
+        }
+    }
 }

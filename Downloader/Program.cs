@@ -30,8 +30,10 @@ namespace Downloader
                 Console.WriteLine("Press key to end this world...");
                 Console.ReadKey();
             }
-            catch (Exception)
+            catch (OfflineException e)
             {
+                Console.WriteLine(e.Message);
+
                 Console.WriteLine("Some very bad error");
                 Console.ReadKey();
             }

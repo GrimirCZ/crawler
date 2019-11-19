@@ -172,7 +172,7 @@ namespace Downloader
             {
                 if (!NetworkInterface.GetIsNetworkAvailable())
                 {
-                    throw;
+                    throw new OfflineException();
                 }
                 if (!IgnoreHttpErrors)
                 {
