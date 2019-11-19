@@ -12,7 +12,7 @@ namespace Downloader
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            string userUrl = GetUserUrl();
+            var userUrl = GetUserUrl();
 
             Task craw = CrawlerBuilder<LevelDescendingCrawler>
                 .Create()
@@ -20,19 +20,18 @@ namespace Downloader
                 .WithTargetDepth(4)
                 .OnPageCrawlEnded(PrintSiteLevelDescending)
                 .Run();
-              
+
 
             Task.WaitAll(craw);
 
 
             Console.WriteLine("Press key to end this world...");
             Console.ReadKey();
-            
         }
 
         private static string GetUserUrl()
         {
-            string url = "";
+            var url = "";
             while (!url.IsValidUrl())
             {
                 Console.Write("Zadejte url: ");
