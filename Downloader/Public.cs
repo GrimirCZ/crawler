@@ -209,11 +209,13 @@ namespace Downloader
         }
     }
 
-    public class OfflineException : Exception {
-        public OfflineException () : base("You are Offline")
+    /**
+     * Exception, that is thrown if there is no internet connection
+     */
+    public class OfflineException : Exception
+    {
+        public OfflineException(string url) : base($"You are offline, failed to download {url}.")
         {
-            
-            //Message = "You are Offline";
         }
     }
 }

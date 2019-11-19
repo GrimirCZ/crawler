@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,10 +31,20 @@ namespace Downloader
                 Console.WriteLine("Press key to end this world...");
                 Console.ReadKey();
             }
-            catch (OfflineException e)
+            catch (AggregateException aggregateException)
             {
-                Console.WriteLine(e.Message);
+                aggregateException.Handle(e =>
+                {
+                    if (e is OfflineException)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
 
+                    return true;
+                });
+            }
+            catch (Exception)
+            {
                 Console.WriteLine("Some very bad error");
                 Console.ReadKey();
             }
@@ -47,7 +58,8 @@ namespace Downloader
                 Console.Write("Zadejte url: ");
                 url = Console.ReadLine();
 
-                if (url == "dev") {
+                if (url == "dev")
+                {
                     url = "https://delta-skola.cz";
                 }
 
@@ -81,7 +93,8 @@ namespace Downloader
 
         private static void PrintSiteLevelDescending(PageCrawlEndedData data)
         {
-            Console.WriteLine((data.Depth + " " + data.Title.Replace('\n', ' ').Trim() + " " + data.URL.Trim()).Trim());
+            Console.WriteLine(
+                (data.Depth + " " + data.Title.Replace('\n', ' ').Trim() + " " + data.URL.Trim()).Trim());
         }
     }
 }

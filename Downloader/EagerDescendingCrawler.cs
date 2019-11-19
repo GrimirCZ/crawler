@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -117,8 +118,13 @@ namespace Downloader
             {
                 doc = await _getPageDoc(url);
             }
-            catch (WebException e)
+            catch (WebException)
             {
+                if (!NetworkInterface.GetIsNetworkAvailable())
+                {
+                    throw new OfflineException(url);
+                }
+
                 if (!IgnoreHttpErrors)
                 {
                     throw;

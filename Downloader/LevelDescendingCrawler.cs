@@ -172,8 +172,9 @@ namespace Downloader
             {
                 if (!NetworkInterface.GetIsNetworkAvailable())
                 {
-                    throw new OfflineException();
+                    throw new OfflineException(url);
                 }
+
                 if (!IgnoreHttpErrors)
                 {
                     throw;
@@ -223,6 +224,7 @@ namespace Downloader
                 OnPageCrawlEndedHandlers = prev.OnPageCrawlEndedHandlers,
             };
         }
+
         public async Task Run()
         {
             _levelManager = LevelManager.Create();
